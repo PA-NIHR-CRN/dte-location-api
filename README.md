@@ -1,30 +1,33 @@
-# DTE Location API
-This project is an ASP.NET Core Web API project as an AWS Lambda exposed through Amazon API Gateway. 
+# Location-API
 
-## Run the application locally
+Location-API is a ASP.NET Core Web API project that provides location-based services for applications requiring geolocation data. It is designed to interact and support a variety of applications by providing geographical information. The API is hosted and runs independently, without the need for AWS Lambda or API Gateway.
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+## Table of Contents
+- [Project Description](#project-description)
+- [How to Install and Run the Project](#how-to-install-and-run-the-project)
+- [Usage](#usage)
 
-To use the SAM CLI, you need the following tools.
+## Project Description
+Location-API is developed to support applications requiring location-related information. The API provides a seamless service to deliver geolocation data based on input parameters such as coordinates, addresses, or point of interest.
 
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* .NET Core - [Install .NET Core](https://www.microsoft.com/net/download)
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+The API interacts and complements other services by providing valuable location data for various operations. The API is built using ASP.NET Core and hosted independently, ensuring a flexible and platform-independent setup.
 
-## Here are some steps to follow to get started from the command line:
+## How to Install and Run the Project
+To run the project, you will need to have the following installed on your machine:
 
-Execute build
-```
-    dotnet build
-```
+- .NET Core 6 SDK or later
 
-Execute unit tests
-```
-    dotnet test
-```
+To run the project, follow these steps:
+1. Clone the repository to your local machine.
+2. Update `appsettings.json` with the appropriate settings.
+3. Right click on the location-api project and select properties. When the modal pops up select run/configurations/default and set the environment variable ASPNETCORE_ENVIRONMENT to Development.
+4. To access the API directly go to https://localhost:5001/swagger.
 
-Execute SAM client to run the function locally, you can choose or create a new event that points to the controller action
-```
-sam build LocationApiFunction --template template.yaml --build-dir .aws-sam/build
-sam local invoke LocationApiFunction --template .aws-sam/build/template.yaml --event "./events/GettAddressByPostCode.json"
-```
+## Usage
+To use the API, send HTTP requests to the local endpoint.
+
+To use the project, you can follow these steps:
+
+1. Set the environment variable `ASPNETCORE_ENVIRONMENT` to `Development`.
+2. Start the project.
+3. Access the API through `https://localhost:5001/swagger`.
