@@ -13,7 +13,7 @@ Resources:
     Properties:
       CodeUri: ./src/LocationApi/
       Handler: LocationApi::LocationApi.Function::FunctionHandlerAsync
-      Runtime: dotnetcore3.1
+      Runtime: 
       Role: arn:aws:iam::536374685097:role/nihr-dte-dev-eu-west-2-lambdaRole
       MemorySize: 256
       Environment:
