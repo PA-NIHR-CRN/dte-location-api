@@ -105,7 +105,7 @@ namespace LocationApi
 
             // Applications / Features
             services.AddApplication();
-            services.AddInfrastructure(Configuration, Environment.EnvironmentName);
+            services.AddInfrastructure(Configuration);
 
             // All others
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));

@@ -15,9 +15,7 @@ namespace LocationApi.DependencyRegistrations
 {
     public static class InfrastructureRegistration
     {
-        private static readonly string[] ProdEnvironmentNames = { "production", "prod", "live" };
-
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, string environmentName)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Infrastructure dependencies
             services.AddSingleton<IClock, Clock>();
@@ -30,12 +28,6 @@ namespace LocationApi.DependencyRegistrations
             services
                 .AddHttpClientWithRetry<IPostCoderHttpClient, PostCoderAddressHttpClient, PostCoderHttpMessageHandler>(clientsSettings.PostCoderService, 2, logger)
                 .AddHttpClientWithRetry<IOrdnanceSurveyHttpClient, OrdnanceSurveyAddressHttpClient, OrdnanceSurveyHttpMessageHandler>(clientsSettings.OrdnanceSurveyService, 2, logger);
-
-            // If not Prod, then enable stubs
-            if (!ProdEnvironmentNames.Any(x => string.Equals(x, environmentName, StringComparison.OrdinalIgnoreCase)))
-            {
-                // Enable local stubs
-            }
 
             return services;
         }
