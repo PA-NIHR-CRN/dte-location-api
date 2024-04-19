@@ -7,5 +7,6 @@ namespace Application.Contracts
     public interface IAddressHttpClient
     {
         Task<IEnumerable<PostcodeAddressModel>> GetAddressesByPostcodeAsync(string postcode);
+        Task<LatLngModel> GetLatLngByPostcodeAsync(string postcode);
     }
 }

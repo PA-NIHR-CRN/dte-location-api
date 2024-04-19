@@ -45,6 +45,35 @@ namespace Infrastructure.Clients
             return response.Results?.Where(x => x.Dpa != null).Select(x => OrdnanceSurveyResponseMapper.MapTo(x.Dpa)) ?? new List<PostcodeAddressModel>();
         }
 
+        public async Task<LatLngModel> GetLatLngByPostcodeAsync(string postcode)
+        {
+            var httpRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"search/places/v1/postcode?{BuildCountryCodeQueryParams(OrdnanceSurveyCountries.Countries)}&lr=EN&postcode={postcode}", UriKind.Relative),
+                Method = HttpMethod.Get
+            };
+            
+            var response = await SendAsync<OrdnanceSurveyAddressResponse>(httpRequest);
+
+            if (response == null)
+            {
+                throw new Exception($"{nameof(OrdnanceSurveyAddressResponse)} is null");
+            }
+
+            var result = response.Results?.FirstOrDefault(x => x.Dpa != null);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new LatLngModel
+            {
+                Latitude = result.Dpa.Y_Coordinate,
+                Longitude = result.Dpa.X_Coordinate
+            };
+        }
+
         private static string BuildCountryCodeQueryParams(IEnumerable<CountryModel> countryModels)
         {
             var sb = new StringBuilder("fq=");

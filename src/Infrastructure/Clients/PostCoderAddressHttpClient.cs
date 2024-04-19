@@ -36,6 +36,19 @@ namespace Infrastructure.Clients
 
             return response;
         }
+
+        public async Task<LatLngModel> GetLatLngByPostcodeAsync(string postcode)
+        {
+            var httpRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"search/SomeUrl/v1/postcode?postcode={postcode}", UriKind.Relative),
+                Method = HttpMethod.Get
+            };
+            
+            var response = await SendAsync<LatLngModel>(httpRequest);
+
+            return response;
+        }
     }
     
     public class PostCoderHttpMessageHandler : DelegatingHandler

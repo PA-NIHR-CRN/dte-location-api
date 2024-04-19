@@ -37,5 +37,21 @@ namespace LocationApi.Controllers.V1
 
             return Ok(await _mediator.Send(new GetAddressesByPostcodeQuery(postcode)));
         }
+        
+        
+        /// <summary>
+        /// Get the latitude and longitude for a given postcode
+        /// </summary>
+        /// <response code="200">Lat and long retrieved</response>
+        /// <response code="500">Server side error</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(LatLngModel))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = null)]
+        [HttpGet("latlng/{postcode}")]
+        public async Task<IActionResult> GetLatLngByPostcode([FromRoute] GetLatLngByPostcodeRequest request)
+        {
+            var postcode = PostcodeValidator.Sanitize(request.Postcode);
+
+            return Ok(await _mediator.Send(new GetLatLngByPostcodeQuery(postcode)));
+        }
     }
 }
