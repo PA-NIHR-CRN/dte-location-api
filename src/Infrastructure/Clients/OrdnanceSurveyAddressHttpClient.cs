@@ -69,8 +69,8 @@ namespace Infrastructure.Clients
 
             return new LatLngModel
             {
-                Latitude = result.Dpa.Y_Coordinate,
-                Longitude = result.Dpa.X_Coordinate
+                Latitude = result.Dpa.Lat,
+                Longitude = result.Dpa.Lon
             };
         }
 
