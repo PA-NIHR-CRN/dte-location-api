@@ -70,7 +70,7 @@ namespace Infrastructure.Clients
             return new LatLngModel
             {
                 Latitude = result.Dpa.Lat,
-                Longitude = result.Dpa.Lon
+                Longitude = result.Dpa.Lng
             };
         }
 

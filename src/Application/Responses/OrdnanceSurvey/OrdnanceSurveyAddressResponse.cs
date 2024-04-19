@@ -48,7 +48,7 @@ namespace Application.Responses.OrdnanceSurvey
         [JsonProperty("X_COORDINATE")] public string X_Coordinate { get; set; }
 
         [JsonProperty("Y_COORDINATE")] public string Y_Coordinate { get; set; }
-        [JsonProperty("LAT")] public double Lat { get; set; }
-        [JsonProperty("LON")] public double Lon { get; set; }
+        [JsonProperty("LAT")] public float Lat { get; set; }
+        [JsonProperty("LNG")] public float Lng { get; set; }
     }
 }
