@@ -45,7 +45,7 @@ namespace Infrastructure.Clients
             return response.Results?.Where(x => x.Dpa != null).Select(x => OrdnanceSurveyResponseMapper.MapTo(x.Dpa)) ?? new List<PostcodeAddressModel>();
         }
 
-        public async Task<LatLngModel> GetLatLngByPostcodeAsync(string postcode)
+        public async Task<CoordinatesModel> GetCoordinatesByPostcodeAsync(string postcode, CancellationToken cancellationToken)
         {
             var httpRequest = new HttpRequestMessage
             {
@@ -57,6 +57,7 @@ namespace Infrastructure.Clients
 
             if (response == null)
             {
+                _logger.LogError("Failed to retrieve coordinates for postcode {Postcode}", postcode);
                 throw new Exception($"{nameof(OrdnanceSurveyAddressResponse)} is null");
             }
 
@@ -67,10 +68,11 @@ namespace Infrastructure.Clients
                 return null;
             }
 
-            return new LatLngModel
+            return new CoordinatesModel
             {
                 Latitude = result.Dpa.Lat,
-                Longitude = result.Dpa.Lng
+                Longitude = result.Dpa.Lng,
+                SRID = 4326
             };
         }
 

@@ -37,7 +37,7 @@ namespace Infrastructure.Clients
             return response;
         }
 
-        public async Task<LatLngModel> GetLatLngByPostcodeAsync(string postcode)
+        public async Task<CoordinatesModel> GetCoordinatesByPostcodeAsync(string postcode, CancellationToken cancellationToken)
         {
             var httpRequest = new HttpRequestMessage
             {
@@ -45,7 +45,7 @@ namespace Infrastructure.Clients
                 Method = HttpMethod.Get
             };
             
-            var response = await SendAsync<LatLngModel>(httpRequest);
+            var response = await SendAsync<CoordinatesModel>(httpRequest);
 
             return response;
         }
