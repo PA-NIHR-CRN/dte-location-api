@@ -45,6 +45,37 @@ namespace Infrastructure.Clients
             return response.Results?.Where(x => x.Dpa != null).Select(x => OrdnanceSurveyResponseMapper.MapTo(x.Dpa)) ?? new List<PostcodeAddressModel>();
         }
 
+        public async Task<CoordinatesModel> GetCoordinatesByPostcodeAsync(string postcode, CancellationToken cancellationToken)
+        {
+            var httpRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"search/places/v1/postcode?{BuildCountryCodeQueryParams(OrdnanceSurveyCountries.Countries)}&lr=EN&postcode={postcode}&output_srs=WGS84", UriKind.Relative),
+                Method = HttpMethod.Get
+            };
+            
+            var response = await SendAsync<OrdnanceSurveyAddressResponse>(httpRequest);
+
+            if (response == null)
+            {
+                _logger.LogError("Failed to retrieve coordinates for postcode {Postcode}", postcode);
+                throw new Exception($"{nameof(OrdnanceSurveyAddressResponse)} is null");
+            }
+
+            var result = response.Results?.FirstOrDefault(x => x.Dpa != null);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return new CoordinatesModel
+            {
+                Latitude = result.Dpa.Lat,
+                Longitude = result.Dpa.Lng,
+                SRID = 4326
+            };
+        }
+
         private static string BuildCountryCodeQueryParams(IEnumerable<CountryModel> countryModels)
         {
             var sb = new StringBuilder("fq=");
