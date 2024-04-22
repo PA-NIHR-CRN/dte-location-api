@@ -49,7 +49,7 @@ namespace Infrastructure.Clients
         {
             var httpRequest = new HttpRequestMessage
             {
-                RequestUri = new Uri($"search/places/v1/postcode?{BuildCountryCodeQueryParams(OrdnanceSurveyCountries.Countries)}&lr=EN&postcode={postcode}", UriKind.Relative),
+                RequestUri = new Uri($"search/places/v1/postcode?{BuildCountryCodeQueryParams(OrdnanceSurveyCountries.Countries)}&lr=EN&postcode={postcode}&output_srs=WGS84", UriKind.Relative),
                 Method = HttpMethod.Get
             };
             
