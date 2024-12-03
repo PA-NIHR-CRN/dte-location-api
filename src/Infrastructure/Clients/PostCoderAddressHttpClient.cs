@@ -36,6 +36,19 @@ namespace Infrastructure.Clients
 
             return response;
         }
+
+        public async Task<CoordinatesModel> GetCoordinatesByPostcodeAsync(string postcode, CancellationToken cancellationToken)
+        {
+            var httpRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"search/SomeUrl/v1/postcode?postcode={postcode}", UriKind.Relative),
+                Method = HttpMethod.Get
+            };
+            
+            var response = await SendAsync<CoordinatesModel>(httpRequest);
+
+            return response;
+        }
     }
     
     public class PostCoderHttpMessageHandler : DelegatingHandler
