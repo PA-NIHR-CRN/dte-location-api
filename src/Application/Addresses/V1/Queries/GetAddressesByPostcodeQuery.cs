@@ -24,23 +24,19 @@ namespace Application.Addresses.V1.Queries
         public class GetAddressesByPostcodeQueryHandler : IRequestHandler<GetAddressesByPostcodeQuery, IEnumerable<PostcodeAddressModel>>
         {
             private readonly ILogger<GetAddressesByPostcodeQueryHandler> _logger;
-            private readonly IEnumerable<IAddressHttpClient> _postcodeServiceHttpClients;
+            private readonly IEnumerable<IPostcodeLookup> _postcodeLookups;
 
-            public GetAddressesByPostcodeQueryHandler(IOrdnanceSurveyHttpClient ordnanceSurveyHttpClient, IPostCoderHttpClient postCoderHttpClient, IHeaderService headerService, ILogger<GetAddressesByPostcodeQueryHandler> logger)
+            public GetAddressesByPostcodeQueryHandler(IEnumerable<IPostcodeLookup> postcodeLookups, IHeaderService headerService, ILogger<GetAddressesByPostcodeQueryHandler> logger)
             {
                 _logger = logger;
-                _postcodeServiceHttpClients = new List<IAddressHttpClient>
-                {
-                    ordnanceSurveyHttpClient,
-                    // postCoderHttpClient
-                };
+                _postcodeLookups = postcodeLookups;
             }
 
             public async Task<IEnumerable<PostcodeAddressModel>> Handle(GetAddressesByPostcodeQuery request, CancellationToken cancellationToken)
             {
                 Exception lastException = null;
                 
-                foreach (var client in _postcodeServiceHttpClients)
+                foreach (var client in _postcodeLookups)
                 {
                     try
                     {
@@ -58,7 +54,6 @@ namespace Application.Addresses.V1.Queries
                     {
                         lastException = ex;
                         _logger.LogError(ex, $"HTTP Request Error ({ex.GetType().Name}) getting addresses for postcode: {request.Postcode} - using external service: {client.GetType().Name}: ({ex.HttpStatusCode}) : {ex.Message}");
-                        throw;
                     }
                     catch (HttpRequestException ex)
                     {

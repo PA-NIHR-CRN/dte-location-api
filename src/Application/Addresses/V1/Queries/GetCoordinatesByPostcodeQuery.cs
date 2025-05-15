@@ -24,17 +24,13 @@ namespace Application.Addresses.V1.Queries
             GetCoordinatesByPostcodeQueryHandler : IRequestHandler<GetCoordinatesByPostcodeQuery, CoordinatesModel>
         {
             private readonly ILogger<GetCoordinatesByPostcodeQueryHandler> _logger;
-            private readonly IEnumerable<IAddressHttpClient> _postcodeServiceHttpClients;
+            private readonly IEnumerable<IPostcodeLookup> _postcodeLookups;
 
-            public GetCoordinatesByPostcodeQueryHandler(IOrdnanceSurveyHttpClient ordnanceSurveyHttpClient,
+            public GetCoordinatesByPostcodeQueryHandler(IEnumerable<IPostcodeLookup> postcodeLookups,
                 ILogger<GetCoordinatesByPostcodeQueryHandler> logger)
             {
                 _logger = logger;
-                _postcodeServiceHttpClients = new List<IAddressHttpClient>
-                {
-                    ordnanceSurveyHttpClient,
-                    // postCoderHttpClient
-                };
+                _postcodeLookups = postcodeLookups;
             }
 
             public async Task<CoordinatesModel> Handle(GetCoordinatesByPostcodeQuery request,
@@ -42,7 +38,7 @@ namespace Application.Addresses.V1.Queries
             {
                 Exception lastException = null;
 
-                foreach (var client in _postcodeServiceHttpClients)
+                foreach (var client in _postcodeLookups)
                 {
                     try
                     {
@@ -60,7 +56,6 @@ namespace Application.Addresses.V1.Queries
                     {
                         lastException = ex;
                         _logger.LogError(ex, "HTTP Request Error ({Name}) getting coordinates for postcode: {RequestPostcode} - using external service: {Name}: ({ExHttpStatusCode}) : {ExMessage}", ex.GetType().Name, request.Postcode, client.GetType().Name, ex.HttpStatusCode, ex.Message);
-                        throw;
                     }
                     catch (HttpRequestException ex)
                     {

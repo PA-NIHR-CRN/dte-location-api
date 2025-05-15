@@ -7,6 +7,7 @@ using Dte.Common.Contracts;
 using Dte.Common.Extensions;
 using Dte.Common.Http;
 using Infrastructure.Clients;
+using MarkEmbling.PostcodesIO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,11 @@ namespace LocationApi.DependencyRegistrations
             services
                 .AddHttpClientWithRetry<IPostCoderHttpClient, PostCoderAddressHttpClient, PostCoderHttpMessageHandler>(clientsSettings.PostCoderService, 2, logger)
                 .AddHttpClientWithRetry<IOrdnanceSurveyHttpClient, OrdnanceSurveyAddressHttpClient, OrdnanceSurveyHttpMessageHandler>(clientsSettings.OrdnanceSurveyService, 2, logger);
+
+            services.AddSingleton<IPostcodesIOClient, PostcodesIOClient>();
+
+            services.AddScoped<IPostcodeLookup>(x => x.GetRequiredService<IOrdnanceSurveyHttpClient>());
+            services.AddScoped<IPostcodeLookup, PostcodeIOAdapter>();
 
             // If not Prod, then enable stubs
             if (!ProdEnvironmentNames.Any(x => string.Equals(x, environmentName, StringComparison.OrdinalIgnoreCase)))

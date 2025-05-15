@@ -1,6 +1,6 @@
 namespace Application.Contracts
 {
-    public interface IPostCoderHttpClient : IAddressHttpClient
+    public interface IPostCoderHttpClient : IPostcodeLookup
     {
         
     }

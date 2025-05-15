@@ -1,6 +1,6 @@
 namespace Application.Contracts
 {
-    public interface IOrdnanceSurveyHttpClient : IAddressHttpClient
+    public interface IOrdnanceSurveyHttpClient : IPostcodeLookup
     {
     }
 }
