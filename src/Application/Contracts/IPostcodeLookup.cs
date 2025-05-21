@@ -5,7 +5,7 @@ using Application.Models;
 
 namespace Application.Contracts
 {
-    public interface IAddressHttpClient
+    public interface IPostcodeLookup
     {
         Task<IEnumerable<PostcodeAddressModel>> GetAddressesByPostcodeAsync(string postcode);
         Task<CoordinatesModel> GetCoordinatesByPostcodeAsync(string postcode, CancellationToken cancellationToken);

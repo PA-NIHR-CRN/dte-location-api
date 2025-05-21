@@ -16,6 +16,9 @@ namespace LocationApi
             Host.CreateDefaultBuilder(args)
                 .AddAwsSecrets()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureAppConfiguration((hostContext, configurationBuilder) => configurationBuilder.AddUserSecrets<Program>());
+                .ConfigureAppConfiguration((hostContext, configurationBuilder) => configurationBuilder
+                    .AddUserSecrets<Program>()
+                    .AddJsonFile("appsettings.user.json", optional: true, reloadOnChange: true)
+                );
     }
 }
